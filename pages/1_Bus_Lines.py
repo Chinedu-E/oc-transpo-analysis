@@ -21,7 +21,7 @@ def get_headings(bus):
 
 
 def get_stops(bus: str, heading: str):
-    longest_df = pd.read_csv("longest_trips.csv")
+    longest_df = data.longest_trips
     longest = longest_df[(longest_df["heading"] == heading) & (longest_df["route_id"] == str(bus))]
     direction = data.trips[data.trips.trip_id == longest.longest_trip.values[0]]
     direction_shape = data.shapes[data.shapes["shape_id"] == direction.shape_id.values[0]][["shape_pt_lat", "shape_pt_lon"]].values
@@ -59,7 +59,7 @@ def get_longest_trip(trips):
 
 
 def get_bus_stats(bus, heading):
-    longest_df = pd.read_csv("longest_trips.csv")
+    longest_df = data.longest_trips
     longest = longest_df[(longest_df["heading"] == heading) & (longest_df["route_id"] == str(bus))]
     trip_stops = data.stop_times[data.stop_times["trip_id"] == longest.longest_trip.values[0]]
 
