@@ -86,35 +86,12 @@ def plot_most_stops(n=10):
     return (chart).interactive()
 
 
-@st.cache
-def get_most_stops(n):
-    seen = []
-    max_stops = []
-    for stop_n in reversed(data.stop_times["stop_sequence"].unique()):
-        df = data.stop_times[data.stop_times["stop_sequence"] == stop_n]
-        for trip_id in df["trip_id"].values:
-            bus = data.trips[data.trips["trip_id"] == trip_id]["route_id"].values[0]
-            if bus not in seen:
-                seen.append(bus)
-                max_stops.append(stop_n)
-        if len(seen) >= n:
-            break
-    df = pd.DataFrame({"Bus": seen, "Number of Stops": max_stops})
-    df["Bus"] = df["Bus"].apply(data.get_short_name)
-    return df
-
-
 def plot_longest():
     chart = alt.Chart(data.longest_trips, title="Scatter plot of distance travelled vs number of stops").mark_point().encode(
         y="n",
         x="distance(km)"
     )
     return chart.interactive()
-
-
-def get_longest():
-    df = pd.read_csv("longest_trips.csv")
-    return df
 
 
 def render_map():
